@@ -9,6 +9,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to Production
+    permissions:
+      contents: write  # Allow pushing back to repository
     
     steps:
     - name: Checkout code

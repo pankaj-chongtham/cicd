@@ -17,14 +17,6 @@ def status():
         "version": "1.0.0"
     })
 
-@app.route('/api/health', methods=['GET'])
-def health():
-    return jsonify({
-        "health": "healthy",
-        "service": "Flask Demo App",
-        "uptime": "running"
-    })
-
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({

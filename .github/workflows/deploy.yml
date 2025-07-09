@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted  # Run on your local machine
     name: Deploy to Production
     permissions:
       contents: write  # Allow pushing back to repository
@@ -20,14 +20,20 @@ jobs:
       run: |
         echo "🚀 Deploying to Production Server..."
         
-        # Copy app from current directory to Production Server folder in repo
+        # Copy app from current directory to Production Server folder
         mkdir -p "Production Server"
         cp "app.py" "Production Server/"
         
         # Create simple requirements.txt for production
         echo "Flask==2.3.3" > "Production Server/requirements.txt"
         
+        # Also copy to the actual Production Server folder outside repo
+        mkdir -p "../Production Server"
+        cp "app.py" "../Production Server/"
+        cp "Production Server/requirements.txt" "../Production Server/"
+        
         echo "✅ Deployment completed!"
+        echo "📁 Files deployed to both GitHub and local Production Server!"
     
     - name: Commit production deployment
       run: |

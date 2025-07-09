@@ -13,32 +13,34 @@ jobs:
       contents: write  # Allow pushing back to repository
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
     - name: Deploy to Production Server
       run: |
         echo "🚀 Deploying to Production Server..."
         
+        # Navigate to the repository directory
+        cd "c:\Users\chon791ad14\Downloads\RAMAIAH\cicddemo\Development Server"
+        
         # Copy app from current directory to Production Server folder
-        mkdir -p "Production Server"
-        cp "app.py" "Production Server/"
+        mkdir -Force "Production Server"
+        Copy-Item "app.py" "Production Server\"
         
         # Create simple requirements.txt for production
-        echo "Flask==2.3.3" > "Production Server/requirements.txt"
+        "Flask==2.3.3" | Out-File "Production Server\requirements.txt" -Encoding utf8
         
         # Also copy to the actual Production Server folder outside repo
-        mkdir -p "../Production Server"
-        cp "app.py" "../Production Server/"
-        cp "Production Server/requirements.txt" "../Production Server/"
+        mkdir -Force "..\Production Server"
+        Copy-Item "app.py" "..\Production Server\"
+        Copy-Item "Production Server\requirements.txt" "..\Production Server\"
         
         echo "✅ Deployment completed!"
         echo "📁 Files deployed to both GitHub and local Production Server!"
+      shell: powershell
     
     - name: Commit production deployment
       run: |
+        cd "c:\Users\chon791ad14\Downloads\RAMAIAH\cicddemo\Development Server"
         git config --local user.email "chongthamkaj@gmail.com"
         git config --local user.name "pankaj-chongtham"
         git add "Production Server/"
-        git diff --staged --quiet || git commit -m "🚀 Deploy to production from release branch"
-        git push || echo "No changes to push"
+        git diff --staged --quiet; if ($LASTEXITCODE -ne 0) { git commit -m "🚀 Deploy to production from release branch"; git push }
+      shell: powershell

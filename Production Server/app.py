@@ -17,7 +17,6 @@ def status():
         "version": "1.0.0"
     })
 
-
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({
